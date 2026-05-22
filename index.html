@@ -1,287 +1,545 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Beccy</title>
-    <!-- Tailwind CSS for warm, spacious sans-serif layout -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Smooth, organic transitions for layout and background color morphs */
-        .fade-transition {
-            transition: opacity 1000ms cubic-bezier(0.4, 0, 0.2, 1), 
-                        background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1),
-                        color 1000ms ease;
-        }
-        .text-fade {
-            transition: opacity 800ms ease, transform 800ms ease;
-        }
-        /* Sequential staggered animation utilities for Act III */
-        .trait-node {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 600ms ease, transform 600ms ease;
-        }
-        .trait-node.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        /* Floating CSS keyframes engine for the birthday balloon release */
-        @keyframes driftUp {
-            0% {
-                transform: translateY(105vh) scale(1);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.65;
-            }
-            90% {
-                opacity: 0.65;
-            }
-            100% {
-                transform: translateY(-15vh) scale(0.9);
-                opacity: 0;
-            }
-        }
-        .balloon {
-            position: fixed;
-            bottom: -10vh;
-            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-            animation: driftUp 8s linear forwards;
-            pointer-events: none;
-            z-index: 5;
-        }
-        /* Small knot detail below balloon */
-        .balloon::after {
-            content: "";
-            position: absolute;
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-bottom: 7px solid inherit;
-            opacity: 0.7;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Beccy</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F8F4EE;
+  --ink:#2A2220;
+  --muted:#9A8F85;
+  --blue-deep:#1B3A5C;
+  --blue-mid:#4A7FA5;
+  --blue-pale:#C8DFF0;
+}
+html{height:100%}
+body{
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+  transition:background 1.2s ease,color 0.8s ease;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:1;opacity:0.5;
+}
+
+/* ORBS */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(70px);opacity:0;transition:opacity 2s ease;}
+#orb1{width:420px;height:420px;background:rgba(74,127,165,0.18);top:-120px;right:-120px;}
+#orb2{width:320px;height:320px;background:rgba(27,58,92,0.12);bottom:-80px;left:-80px;}
+
+/* SEA BACKGROUND for act-3 */
+#sea-bg{
+  position:fixed;inset:0;
+  z-index:0;
+  opacity:0;
+  transition:opacity 2.5s ease;
+  pointer-events:none;
+  background:
+    linear-gradient(180deg,
+      #7BB8D4 0%,
+      #5A9EC4 28%,
+      #3A80A8 42%,
+      #2A6888 50%,
+      #1E5070 55%,
+      #1A4A6A 60%,
+      #1B3A5C 100%
+    );
+}
+/* Ocean wave shimmer */
+#sea-bg::after{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0px,
+      rgba(255,255,255,0.03) 80px,
+      transparent 160px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(255,255,255,0.02) 40px,
+      transparent 80px
+    );
+  animation:shimmer 8s ease-in-out infinite alternate;
+}
+@keyframes shimmer{
+  0%{transform:translateX(0) translateY(0);}
+  100%{transform:translateX(20px) translateY(-8px);}
+}
+/* Dark overlay on sea bg to keep text readable */
+#sea-overlay{
+  position:fixed;inset:0;
+  z-index:1;
+  opacity:0;
+  transition:opacity 2.5s ease;
+  pointer-events:none;
+  background:rgba(15,28,45,0.62);
+}
+
+/* PROGRESS */
+#progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--blue-mid);width:20%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);z-index:10;opacity:0.7;}
+
+/* HEADER / FOOTER */
+#ui-header{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:22px 30px;z-index:8;}
+#ui-footer{position:fixed;bottom:0;left:0;right:0;display:flex;flex-direction:column;align-items:center;padding:28px;gap:14px;z-index:8;}
+.ui-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:400;transition:color 0.8s ease;}
+
+/* BUTTON — default */
+#next-btn{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:13px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;
+  background:transparent;border:1px solid rgba(42,34,32,0.28);
+  color:var(--ink);padding:14px 36px;border-radius:100px;
+  cursor:pointer;transition:background 0.35s ease,color 0.35s ease,border-color 0.35s ease,opacity 0.35s ease;
+  display:block;
+}
+#next-btn:hover{background:var(--ink);color:var(--cream);border-color:var(--ink);}
+#next-btn.hidden-btn{opacity:0;pointer-events:none;}
+/* White fill style for "See how they blend" */
+#next-btn.blend-btn{
+  background:#FFFFFF;
+  color:var(--ink);
+  border-color:#FFFFFF;
+}
+#next-btn.blend-btn:hover{background:#F0F0F0;border-color:#F0F0F0;}
+/* Dark mode button */
+body.dark-mode #next-btn:not(.blend-btn){border-color:rgba(200,223,240,0.35);color:var(--blue-pale);}
+body.dark-mode #next-btn:not(.blend-btn):hover{background:var(--blue-pale);color:var(--blue-deep);}
+
+/* STAGE — full screen for act-2b, centered otherwise */
+#stage{
+  position:relative;z-index:4;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+/* ACTS */
+.act{
+  position:absolute;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:1.8rem;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1),transform 0.9s cubic-bezier(0.4,0,0.2,1);
+  pointer-events:none;
+}
+.act.visible{opacity:1;transform:translateY(0);pointer-events:auto;}
+
+/* TYPOGRAPHY */
+.act-label{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);font-weight:400;}
+.act-body{font-size:clamp(21px,2.8vw,28px);line-height:1.65;font-weight:300;color:var(--ink);max-width:520px;}
+.act-body em{font-style:italic;}
+.divider{width:40px;height:1px;background:var(--muted);opacity:0.35;}
+
+/* ——— ACT 2b: FULL-SCREEN TRAIT STRIPS ——— */
+#act-2b{
+  /* Override: stretch to fill full viewport, no gaps, no centering */
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  align-items:stretch;
+  justify-content:stretch;
+  opacity:0;
+  transform:none;
+  transition:opacity 0.9s ease;
+  pointer-events:none;
+  z-index:4;
+}
+#act-2b.visible{opacity:1;pointer-events:auto;transform:none;}
+
+.trait-row{
+  flex:1;
+  display:flex;
+  align-items:stretch;
+  width:100%;
+  opacity:0;
+  transform:translateX(-24px);
+  transition:opacity 0.55s ease, transform 0.55s ease;
+}
+.trait-row.revealed{opacity:1;transform:translateX(0);}
+
+.trait-side{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 20px;
+  font-size:clamp(15px,1.8vw,20px);
+  font-weight:600;
+  line-height:1.35;
+  text-align:center;
+}
+/* Left = lighter tint, Right = darker tint — both same font weight */
+.t1 .left{background:#FDEEE6;color:#7A3B1E;}
+.t1 .right{background:#D4856A;color:#3A1208;}
+.t2 .left{background:#E8EEF6;color:#2A4A6E;}
+.t2 .right{background:#6A90B8;color:#0D2238;}
+.t3 .left{background:#E8F0E6;color:#2E5A2A;}
+.t3 .right{background:#6A9E68;color:#0E2E0D;}
+.t4 .left{background:#F0EAF8;color:#4A2A7A;}
+.t4 .right{background:#9070C8;color:#1C0A42;}
+.t5 .left{background:#FDF2E0;color:#7A5010;}
+.t5 .right{background:#C8941A;color:#3A2000;}
+.t6 .left{background:#F0E8EC;color:#6E2A44;}
+.t6 .right{background:#B06080;color:#2E0A1A;}
+
+/* ——— ACT 3 DARK ——— */
+body.dark-mode{background:var(--blue-deep);color:var(--blue-pale);}
+body.dark-mode .act-body{color:var(--blue-pale);}
+body.dark-mode .ui-label{color:rgba(200,223,240,0.4);}
+body.dark-mode #progress-bar{background:var(--blue-pale);}
+body.dark-mode .divider{background:var(--blue-pale);}
+
+/* Act-3: title matches body copy color (blue-pale) */
+#act-3 .act-label{color:var(--blue-pale);}
+#act-3 .divider{background:var(--blue-pale);opacity:0.4;}
+
+/* BIRTHDAY HEADING */
+.birthday-heading{font-size:clamp(34px,5vw,50px);font-weight:600;color:var(--blue-deep);line-height:1.15;letter-spacing:-.01em;}
+.signature{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:.5rem;font-weight:400;}
+
+/* BALLOONS */
+.balloon{
+  position:fixed;
+  bottom:-160px;
+  pointer-events:none;
+  z-index:25;
+  animation:rise linear forwards;
+}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(0deg);opacity:0.9;}
+  10%{opacity:1;}
+  90%{opacity:0.8;}
+  100%{transform:translateY(-115vh) rotate(12deg);opacity:0;}
+}
+</style>
 </head>
-<body class="fade-transition bg-[#F9F6F0] text-stone-800 min-h-screen flex flex-col justify-between font-sans selection:bg-blue-200 overflow-x-hidden text-lg md:text-xl">
+<body>
 
-    <!-- Ambient Header / Progress Track -->
-    <header class="p-6 md:p-8 flex justify-between items-center w-full max-w-4xl mx-auto z-10">
-        <span id="ambient-title" class="text-sm tracking-[0.2em] uppercase opacity-40 font-semibold transition-opacity duration-500">The Canvas</span>
-        <span id="step-indicator" class="text-sm font-medium opacity-40">1 / 5</span>
-    </header>
+<div id="sea-bg"></div>
+<div id="sea-overlay"></div>
+<div id="orb1" class="orb"></div>
+<div id="orb2" class="orb"></div>
+<div id="progress-bar"></div>
 
-    <!-- Main Content Stage -->
-    <main class="flex-grow flex items-center justify-center px-6 md:px-12 max-w-2xl mx-auto w-full relative min-h-[550px]">
-        
-        <!-- ACT I: THE BASELINE -->
-        <section id="act-1" class="text-fade absolute w-full flex flex-col space-y-6 opacity-100 transform translate-y-0 pointer-events-auto">
-            <p class="text-2xl md:text-3xl leading-relaxed text-stone-700 font-normal tracking-tight">
-                I was having my morning tea and thinking about our chat—specifically when you called me a puzzle with too many hidden sections, while describing yourself as simple and uninteresting.
-            </p>
-            <p class="text-2xl md:text-3xl leading-relaxed text-stone-700 font-normal tracking-tight">
-                It made me laugh, but it also made me realize something. You’ve got it backwards. You aren't simple at all...
-            </p>
-        </section>
+<header id="ui-header">
+  <span class="ui-label" id="chapter-name">The Canvas</span>
+  <span class="ui-label" id="step-num">I · V</span>
+</header>
 
-        <!-- ACT II: THE PARADOX SPLIT -->
-        <section id="act-2" class="text-fade absolute w-full flex flex-col space-y-6 opacity-0 transform translate-y-4 pointer-events-none">
-            <p class="text-3xl md:text-4xl leading-snug text-stone-800 font-medium tracking-tight">
-                You’re simply only for those who give a quick look, but for who looks closely, you’re sophisticated at least.
-            </p>
-        </section>
+<main id="stage">
 
-        <!-- ACT III: THE TRAIT ANIMATION SEQUENCE -->
-        <section id="act-3" class="text-fade absolute w-full flex flex-col space-y-4 opacity-0 transform translate-y-4 pointer-events-none">
-            <p class="text-xl md:text-2xl leading-relaxed text-stone-600 font-normal mb-2">
-                When you look close enough, you see vibrant colors beautifully merging streaks that should be opposites:
-            </p>
-            
-            <!-- Staggered Container Grid Layout -->
-            <div id="traits-container" class="space-y-3 w-full">
-                <div class="trait-node p-5 rounded-2xl bg-amber-100/60 border border-amber-200/50 flex justify-between items-center shadow-sm">
-                    <span class="text-stone-800 font-semibold text-xl">Caring & warm</span>
-                    <span class="text-sm uppercase tracking-wider text-amber-800 font-bold italic bg-white/60 px-3 py-1 rounded-full">yet sexy & seductive</span>
-                </div>
-                <div class="trait-node p-5 rounded-2xl bg-slate-200/60 border border-slate-300/40 flex justify-between items-center shadow-sm">
-                    <span class="text-stone-800 font-semibold text-xl">Softie & sensitive</span>
-                    <span class="text-sm uppercase tracking-wider text-slate-700 font-bold italic bg-white/60 px-3 py-1 rounded-full">yet resilient & reliable</span>
-                </div>
-                <div class="trait-node p-5 rounded-2xl bg-emerald-100/60 border border-emerald-200/40 flex justify-between items-center shadow-sm">
-                    <span class="text-stone-800 font-semibold text-xl">Frank & blunt</span>
-                    <span class="text-sm uppercase tracking-wider text-emerald-800 font-bold italic bg-white/60 px-3 py-1 rounded-full">yet unselfish</span>
-                </div>
-            </div>
-        </section>
+  <!-- ACT 1: THE CANVAS -->
+  <div class="act visible" id="act-1" style="width:min(580px,90vw);">
+    <span class="act-label">A thought, over morning tea</span>
+    <div class="divider"></div>
+    <p class="act-body">I was thinking about our chat the other day — specifically you called me a puzzle with too many hidden sections, while saying that you're simple and not that interesting.</p>
+    <p class="act-body">It made me laugh because you've got it <em>slightly</em> wrong.</p>
+  </div>
 
-        <!-- ACT IV: THE BLEND -->
-        <section id="act-4" class="text-fade absolute w-full flex flex-col space-y-6 opacity-0 transform translate-y-4 pointer-events-none">
-            <p class="text-2xl md:text-3xl leading-relaxed font-normal tracking-tight">
-                Together they form <span class="font-semibold text-blue-300 underline decoration-wavy decoration-2 underline-offset-4">blue</span>, a beautiful color, but never simple or to be taken for granted.
-            </p>
-            <p class="text-2xl md:text-3xl leading-relaxed font-normal opacity-90 tracking-tight">
-                No wonder it's also your favorite color.
-            </p>
-        </section>
+  <!-- ACT 2a: THE SURFACE -->
+  <div class="act" id="act-2a" style="width:min(580px,90vw);">
+    <span class="act-label">The surface</span>
+    <div class="divider"></div>
+    <p class="act-body">Only for those who look on the surface, you're simple...</p>
+    <p class="act-body">...But for who look closely, you're sophisticated and interesting.</p>
+  </div>
 
-        <!-- ACT V: THE TOAST (WITH BALLOON ENGINE SOURCE) -->
-        <section id="act-5" class="text-fade absolute w-full flex flex-col space-y-6 opacity-0 transform translate-y-4 pointer-events-none">
-            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-2">Happy Birthday, Beccy!</h1>
-            <p class="text-2xl md:text-3xl leading-relaxed text-slate-700 font-light tracking-tight">
-                I wish you a long, happy life. I might even envy you because only a few whom time plays in the favor of their beauty.
-            </p>
-            <p class="text-2xl md:text-3xl leading-relaxed text-slate-700 font-light tracking-tight">
-                I'm glad I opened chitchat that night of March 6th, and I look forward to discovering more shades and layers of that color that is you.
-            </p>
-            <p class="text-base tracking-widest uppercase text-slate-400 font-bold pt-4">— Saiff</p>
-        </section>
+  <!-- ACT 2b: THE TRAITS — full screen, no label inside, header shows "The Colors" -->
+  <div class="act" id="act-2b">
+    <div class="trait-row t1" id="tr1">
+      <div class="trait-side left">Fiercely warm &amp; caring</div>
+      <div class="trait-side right">yet sexy &amp; seductive</div>
+    </div>
+    <div class="trait-row t2" id="tr2">
+      <div class="trait-side left">A total softie &amp; sensitive</div>
+      <div class="trait-side right">yet resilient &amp; reliable</div>
+    </div>
+    <div class="trait-row t3" id="tr3">
+      <div class="trait-side left">Blunt &amp; frank</div>
+      <div class="trait-side right">yet deeply unselfish</div>
+    </div>
+    <div class="trait-row t6" id="tr6">
+      <div class="trait-side left">Private &amp; guarded</div>
+      <div class="trait-side right">yet generous with those you trust</div>
+    </div>
+  </div>
 
-    </main>
+  <!-- ACT 3: THE BLEND -->
+  <div class="act" id="act-3" style="width:min(580px,90vw);">
+    <span class="act-label">The blend</span>
+    <div class="divider"></div>
+    <p class="act-body">Together they form blue — a beautiful color, but never simple or to be taken for granted.</p>
+    <p class="act-body" style="opacity:0.75;font-size:clamp(18px,2.2vw,24px);">No wonder it's also your favorite color.</p>
+  </div>
 
-    <!-- Bottom Context Controls -->
-    <footer class="p-8 flex flex-col items-center w-full max-w-4xl mx-auto z-10">
-        <button id="action-btn" onclick="nextStep()" class="font-sans text-sm tracking-widest uppercase border border-stone-300/80 px-10 py-4 rounded-full hover:bg-stone-800 hover:text-white hover:border-stone-800 transition-all duration-300 active:scale-95 shadow-md bg-white/60 font-bold">
-            Look closer
-        </button>
-    </footer>
+  <!-- ACT 4: THE TOAST -->
+  <div class="act" id="act-4" style="width:min(580px,90vw);">
+    <span class="act-label">The toast</span>
+    <div class="divider"></div>
+    <h1 class="birthday-heading">Happy Birthday,<br>Beccy.</h1>
+    <p class="act-body" style="font-size:clamp(18px,2.2vw,24px);">I wish you a long, happy life. I might even envy you — because only a few, time plays in the favor of their beauty.</p>
+    <p class="act-body" style="font-size:clamp(18px,2.2vw,24px);">I'm glad I opened Chitchat that night of March 6th. I look forward to discovering more shades and layers of that color that is you.</p>
+    <p class="signature">— Saiff</p>
+  </div>
 
-    <!-- Interactive Execution Script -->
-    <script>
-        let currentStep = 1;
-        let balloonTimer = null;
+</main>
 
-        // Structural state matrix definitions
-        const stepsConfig = {
-            1: { title: "The Canvas", bg: "bg-[#F9F6F0]", text: "text-stone-800", btn: "Look closer", border: "border-stone-300/80", hideBtn: false },
-            2: { title: "The Deep Look", bg: "bg-[#F5F2EC]", text: "text-stone-800", btn: "Look closely", border: "border-stone-300/80", hideBtn: false },
-            3: { title: "The Palette", bg: "bg-[#EFECE6]", text: "text-stone-800", btn: "See how they blend", border: "border-stone-300/80", hideBtn: true },
-            4: { title: "The Blend", bg: "bg-[#111A24]", text: "text-slate-100", btn: "Close your eyes", border: "border-slate-700 bg-slate-900/50 text-slate-200", hideBtn: false },
-            5: { title: "The Toast", bg: "bg-[#EFF5FB]", text: "text-slate-800", btn: "Read again", border: "border-blue-200 bg-white text-slate-700", hideBtn: false }
-        };
+<footer id="ui-footer">
+  <button id="next-btn" onclick="advance()">Look closer</button>
+</footer>
 
-        /**
-         * Orchestrates transitions across sequential UI cards
-         */
-        function nextStep() {
-            // Clean up running operational engines if resetting
-            if (currentStep === 5) {
-                clearTimeout(balloonTimer);
-                document.querySelectorAll('.balloon').forEach(b => b.remove());
-            }
+<script>
+let step = 1;
+const TOTAL = 5;
+const meta = {
+  1:{chapter:'The Canvas',   num:'I · V',   btn:'Look closer',        dark:false},
+  2:{chapter:'The Surface',  num:'II · V',  btn:'Look closely',       dark:false},
+  3:{chapter:'The Colors',   num:'III · V', btn:'See how they blend', dark:false},
+  4:{chapter:'The Blend',    num:'IV · V',  btn:'Close your eyes',    dark:true },
+  5:{chapter:'The Toast',    num:'V · V',   btn:'Read again',         dark:false},
+};
+const pct={1:20,2:40,3:60,4:80,5:100};
+const actMap={1:'act-1',2:'act-2a',3:'act-2b',4:'act-3',5:'act-4'};
 
-            // Collapse previous active layout node smoothly
-            const currentAct = document.getElementById(`act-${currentStep}`);
-            currentAct.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
-            currentAct.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+let traitsAnimated = false;
+let balloonTimer = null;
+let seaAudio = null;
+let seaTimer = null;
 
-            // Compute structural index increment
-            currentStep = currentStep < 5 ? currentStep + 1 : 1;
-            const config = stepsConfig[currentStep];
+/* ——— BUTTON HELPERS ——— */
+function setBtn(label, hidden, white){
+  const b = document.getElementById('next-btn');
+  b.textContent = label;
+  hidden ? b.classList.add('hidden-btn') : b.classList.remove('hidden-btn');
+  white  ? b.classList.add('blend-btn')  : b.classList.remove('blend-btn');
+}
 
-            setTimeout(() => {
-                // Morph physical background properties dynamically
-                document.body.className = `fade-transition min-h-screen flex flex-col justify-between font-sans selection:bg-blue-200 overflow-x-hidden text-lg md:text-xl ${config.bg} ${config.text}`;
-                
-                // Refresh explicit layout metadata
-                document.getElementById('ambient-title').innerText = config.title;
-                document.getElementById('step-indicator').innerText = `${currentStep} / 5`;
-                
-                const btn = document.getElementById('action-btn');
-                btn.innerText = config.btn;
-                btn.className = `font-sans text-sm tracking-widest uppercase border px-10 py-4 rounded-full transition-all duration-300 active:scale-95 shadow-md ${config.border}`;
-                
-                // Enforce adaptive rendering parameters
-                if (config.hideBtn) {
-                    btn.classList.add('opacity-0', 'pointer-events-none');
-                } else {
-                    btn.classList.remove('opacity-0', 'pointer-events-none');
-                }
+/* ——— ADVANCE ——— */
+function advance(){
+  const curAct = document.getElementById(actMap[step]);
+  curAct.classList.remove('visible');
 
-                // Deploy next structural act visibility
-                const nextAct = document.getElementById(`act-${currentStep}`);
-                nextAct.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-                nextAct.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+  if(step === TOTAL){ step = 1; } else { step++; }
+  const cfg = meta[step];
 
-                // Trigger specialized step scripts
-                if (currentStep === 3) {
-                    runStaggeredTraits();
-                } else if (currentStep === 5) {
-                    queueBalloons();
-                }
-            }, 400);
-        }
+  /* Dark mode + orbs (step 4 = The Blend) */
+  if(cfg.dark){
+    document.body.classList.add('dark-mode');
+    document.getElementById('orb1').style.opacity='1';
+    document.getElementById('orb2').style.opacity='1';
+  } else {
+    document.body.classList.remove('dark-mode');
+    document.getElementById('orb1').style.opacity='0';
+    document.getElementById('orb2').style.opacity='0';
+  }
 
-        /**
-         * Controls staggered node rendering logic for Page 3
-         */
-        function runStaggeredTraits() {
-            const nodes = document.querySelectorAll('.trait-node');
-            nodes.forEach(n => n.classList.remove('visible'));
+  /* Sea bg — show on step 4, hide otherwise */
+  if(step === 4){
+    /* Sea and overlay fade in after 3 s */
+    if(seaTimer) clearTimeout(seaTimer);
+    seaTimer = setTimeout(()=>{
+      document.getElementById('sea-bg').style.opacity = '1';
+      document.getElementById('sea-overlay').style.opacity = '1';
+      startSeaSound();
+    }, 3000);
+  } else {
+    if(seaTimer){ clearTimeout(seaTimer); seaTimer=null; }
+    document.getElementById('sea-bg').style.opacity = '0';
+    document.getElementById('sea-overlay').style.opacity = '0';
+    stopSeaSound();
+  }
 
-            // Fade containers sequentially at a 600ms pacing scale
-            nodes.forEach((node, i) => {
-                setTimeout(() => {
-                    node.classList.add('visible');
-                }, i * 600);
-            });
+  document.body.style.backgroundColor = '';
 
-            // Make the navigation button reappear after exactly double the total visibility time
-            const processingBuffer = (nodes.length * 600) * 2;
-            setTimeout(() => {
-                if (currentStep === 3) {
-                    const btn = document.getElementById('action-btn');
-                    btn.classList.remove('opacity-0', 'pointer-events-none');
-                }
-            }, processingBuffer);
-        }
+  setTimeout(()=>{
+    document.getElementById('chapter-name').textContent = cfg.chapter;
+    document.getElementById('step-num').textContent = cfg.num;
+    document.getElementById('progress-bar').style.width = pct[step]+'%';
 
-        /**
-         * Registers execution timer for birthday atmospheric mechanics
-         */
-        function queueBalloons() {
-            balloonTimer = setTimeout(() => {
-                if (currentStep === 5) {
-                    // Initialize looping array generation for ascending balloons
-                    for (let i = 0; i < 22; i++) {
-                        setTimeout(spawnBalloon, i * 350);
-                    }
-                }
-            }, 10000); // Executed precisely 10 seconds post-load
-        }
+    const nextAct = document.getElementById(actMap[step]);
+    nextAct.classList.add('visible');
 
-        /**
-         * Programmatic creation of individual floating nodes
-         */
-        function spawnBalloon() {
-            if (currentStep !== 5) return;
+    if(step === 3 && !traitsAnimated){
+      runTraitAnimation();
+    } else if(step === 3 && traitsAnimated){
+      setBtn('See how they blend', false, true);
+    } else {
+      setBtn(cfg.btn, false, false);
+    }
 
-            const b = document.createElement('div');
-            b.className = 'balloon';
-            
-            // Randomize spatial and scalar distribution scales
-            const width = Math.floor(Math.random() * 35) + 40; // 40px - 75px
-            const height = Math.floor(width * 1.2);
-            const leftPosition = Math.random() * 90; // 0% - 90%
-            const duration = Math.random() * 4 + 6; // 6s - 10s
-            
-            // Blend beautiful hues of soft ambient blue
-            const shadesOfBlue = ['#93C5FD', '#60A5FA', '#3B82F6', '#2563EB', '#A5F3FC', '#E0F2FE'];
-            const chosenBlue = shadesOfBlue[Math.floor(Math.random() * shadesOfBlue.length)];
+    if(step === 5){
+      if(balloonTimer) clearTimeout(balloonTimer);
+      balloonTimer = setTimeout(launchBalloons, 4000);
+    } else {
+      if(balloonTimer){ clearTimeout(balloonTimer); balloonTimer=null; }
+    }
 
-            b.style.width = `${width}px`;
-            b.style.height = `${height}px`;
-            b.style.left = `${leftPosition}%`;
-            b.style.backgroundColor = chosenBlue;
-            b.style.borderBottomColor = chosenBlue; // Sync knot tone
-            b.style.animationDuration = `${duration}s`;
-            
-            document.body.appendChild(b);
+  }, 420);
 
-            // Clean element node immediately upon animation completion
-            setTimeout(() => b.remove(), duration * 1000);
-        }
-    </script>
+  /* Pre-set button state before transition settles */
+  if(step === 3 && !traitsAnimated){ setBtn('', true, false); }
+  else if(step === 3){ setBtn('See how they blend', false, true); }
+  else { setBtn(cfg.btn, false, false); }
+}
+
+/* ——— TRAIT ANIMATION ——— */
+function runTraitAnimation(){
+  traitsAnimated = true;
+  setBtn('', true, false);
+
+  const rows = document.querySelectorAll('#act-2b .trait-row');
+  /* Triple the original 600 ms = 1800 ms between each */
+  const d = 1800;
+  rows.forEach((r,i)=>{
+    r.classList.remove('revealed');
+    setTimeout(()=>r.classList.add('revealed'), i * d + 200);
+  });
+
+  /* Button after all traits + double the tripled interval */
+  const totalWait = rows.length * d + 200 + d * 2;
+  setTimeout(()=>{ setBtn('See how they blend', false, true); }, totalWait);
+}
+
+/* ——— SEA SOUND (Web Audio API — no external files) ——— */
+let audioCtx = null;
+let seaNodes = [];
+
+function startSeaSound(){
+  if(audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+  /* Layer 1: pink-noise base via filtered white noise */
+  const bufLen = audioCtx.sampleRate * 4;
+  const buf = audioCtx.createBuffer(1, bufLen, audioCtx.sampleRate);
+  const data = buf.getChannelData(0);
+  let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0;
+  for(let i=0;i<bufLen;i++){
+    const w = Math.random()*2-1;
+    b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759;
+    b2=0.96900*b2+w*0.1538520; b3=0.86650*b3+w*0.3104856;
+    b4=0.55000*b4+w*0.5329522; b5=-0.7616*b5-w*0.0168980;
+    data[i]=(b0+b1+b2+b3+b4+b5+w*0.5362)/7;
+  }
+
+  const src = audioCtx.createBufferSource();
+  src.buffer = buf; src.loop = true;
+
+  /* Low-pass filter to shape into wave sound */
+  const lpf = audioCtx.createBiquadFilter();
+  lpf.type='lowpass'; lpf.frequency.value=400; lpf.Q.value=0.5;
+
+  /* Slow LFO to make waves "breathe" */
+  const lfo = audioCtx.createOscillator();
+  lfo.frequency.value = 0.12;
+  const lfoGain = audioCtx.createGain();
+  lfoGain.gain.value = 160;
+  lfo.connect(lfoGain);
+  lfoGain.connect(lpf.frequency);
+  lfo.start();
+
+  const masterGain = audioCtx.createGain();
+  masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(0.32, audioCtx.currentTime + 3);
+
+  src.connect(lpf); lpf.connect(masterGain); masterGain.connect(audioCtx.destination);
+  src.start();
+  seaNodes = [src, lfo, masterGain];
+}
+
+function stopSeaSound(){
+  if(!audioCtx) return;
+  const mg = seaNodes[2];
+  if(mg){
+    mg.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1.5);
+  }
+  setTimeout(()=>{
+    seaNodes.forEach(n=>{ try{n.stop();}catch(e){} });
+    try{ audioCtx.close(); }catch(e){}
+    audioCtx = null; seaNodes = [];
+  }, 1600);
+}
+
+/* ——— BALLOONS ——— */
+function launchBalloons(){
+  const shades=['#1B3A5C','#2E5F8A','#4A7FA5','#6B9FBF','#8FBFD8','#3A6A9A','#1A5080'];
+  for(let i=0;i<22;i++){
+    setTimeout(()=>{
+      const b=createBalloon(shades[Math.floor(Math.random()*shades.length)]);
+      document.body.appendChild(b);
+      b.addEventListener('animationend',()=>b.remove());
+    }, i*220+Math.random()*180);
+  }
+}
+
+function createBalloon(color){
+  const size=40+Math.random()*38;
+  const left=3+Math.random()*92;
+  const duration=5+Math.random()*5;
+  const delay=Math.random()*0.4;
+  const sway=15+Math.random()*25;
+
+  const wrap=document.createElement('div');
+  wrap.className='balloon';
+  wrap.style.cssText=`left:${left}vw;animation-duration:${duration}s;animation-delay:${delay}s;`;
+
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width',size); svg.setAttribute('height',size*1.45);
+  svg.setAttribute('viewBox','0 0 60 87');
+
+  const ell=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+  ell.setAttribute('cx','30');ell.setAttribute('cy','30');
+  ell.setAttribute('rx','26');ell.setAttribute('ry','30');
+  ell.setAttribute('fill',color);
+
+  const hi=document.createElementNS('http://www.w3.org/2000/svg','ellipse');
+  hi.setAttribute('cx','20');hi.setAttribute('cy','18');
+  hi.setAttribute('rx','8');hi.setAttribute('ry','9');
+  hi.setAttribute('fill','rgba(255,255,255,0.22)');
+
+  const knot=document.createElementNS('http://www.w3.org/2000/svg','polygon');
+  knot.setAttribute('points','28,60 32,60 30,66');
+  knot.setAttribute('fill',color);
+
+  const str=document.createElementNS('http://www.w3.org/2000/svg','path');
+  str.setAttribute('d',`M30,66 Q${30+sway/3},76 ${30-sway/4},87`);
+  str.setAttribute('stroke','rgba(200,223,240,0.55)');
+  str.setAttribute('stroke-width','1.2');
+  str.setAttribute('fill','none');
+
+  svg.appendChild(ell);svg.appendChild(hi);svg.appendChild(knot);svg.appendChild(str);
+  wrap.appendChild(svg);
+  return wrap;
+}
+
+/* Init */
+setBtn('Look closer', false, false);
+</script>
 </body>
 </html>
