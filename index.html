@@ -548,14 +548,14 @@ function runTraitAnimation(){
 
   const rows = document.querySelectorAll('#act-2b .trait-row');
   /* Spacing frequency metrics set to 1.6s to guarantee legibility constraints */
-  const d = 2400; 
+  const d = 2100; 
   rows.forEach((r,i)=>{
     r.classList.remove('revealed');
     setTimeout(()=>r.classList.add('revealed'), i * d + 300);
   });
 
   /* Dynamically sets button reveal to execute exactly 600ms after the final panel concludes animation */
-  const totalWait = (rows.length * d) + 3 + 3;
+  const totalWait = (rows.length * d);
   setTimeout(()=>{ setBtn('See how they blend', false, true); }, totalWait);
 }
   
