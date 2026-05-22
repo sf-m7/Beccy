@@ -142,6 +142,57 @@ body.dark-mode .shore-container {
   100% { transform: translateX(-50%); }
 }
 
+/* ——— THE SHORE ASSETS ENGINE ——— */
+.shore-asset {
+  position: absolute;
+  bottom: 11vh;
+  z-index: 3;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  pointer-events: none;
+}
+body.dark-mode .shore-asset {
+  opacity: 1;
+}
+
+/* THE SAILING BOAT */
+#sailing-boat {
+  left: 15%;
+  animation: boatSway 4s ease-in-out infinite alternate, boatSail 40s linear infinite;
+}
+@keyframes boatSway {
+  0% { transform: translateY(0) rotate(-3deg); }
+  100% { transform: translateY(-6px) rotate(4deg); }
+}
+@keyframes boatSail {
+  0% { left: -10%; }
+  100% { left: 110%; }
+}
+
+/* THE LIGHTHOUSE ISLAND */
+#lighthouse-island {
+  right: 5%;
+  bottom: 9vh;
+}
+.lighthouse-beam {
+  position: absolute;
+  top: 15px;
+  left: 25px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 30px 400px 30px 0;
+  border-color: transparent rgba(200, 223, 240, 0.12) transparent transparent;
+  transform-origin: left center;
+  filter: blur(3px);
+  animation: beamSweep 7s ease-in-out infinite alternate;
+}
+@keyframes beamSweep {
+  0% { transform: rotate(-25deg) scaleX(0.4); opacity: 0.2; }
+  50% { transform: rotate(5deg) scaleX(1); opacity: 0.9; }
+  100% { transform: rotate(20deg) scaleX(0.5); opacity: 0.3; }
+}
+
 /* PROGRESS */
 #progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--blue-mid);width:20%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);z-index:10;opacity:0.7;}
 
@@ -299,6 +350,31 @@ body.dark-mode .divider{background:var(--blue-pale);}
   <div id="wave2" class="wave-layer"></div>
   <div id="wave3" class="wave-layer"></div>
 </div>
+
+<!-- THE SAILING BOAT -->
+<div id="sailing-boat" class="shore-asset">
+  <svg width="45" height="50" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+    <path d="M28,10 C28,10 12,25 28,42 Z" fill="#FFFFFF" opacity="0.95"/>
+    <path d="M32,18 C32,18 40,28 32,42 Z" fill="#E2ECF5" opacity="0.8"/>
+    <line x1="30" y1="8" x2="30" y2="44" stroke="#2A2220" stroke-width="2"/>
+    <path d="M10,44 L50,44 L42,52 L18,52 Z" fill="#4A3B32"/>
+  </svg>
+</div>
+
+<!-- THE LIGHTHOUSE ISLAND -->
+<div id="lighthouse-island" class="shore-asset">
+  <div class="lighthouse-beam"></div>
+  <svg width="70" height="90" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10,105 C30,95 70,95 90,105 L100,120 L0,120 Z" fill="#1C2733" />
+    <polygon points="25,100 32,40 48,40 55,100" fill="#E2EBF4" stroke="#111A24" stroke-width="1"/>
+    <polygon points="28,80 30,60 50,60 52,80" fill="#A54242"/>
+    <rect x="30" y="32" width="20" height="8" fill="#2A2220"/>
+    <rect x="34" y="18" width="12" height="14" fill="#FCE9AA" opacity="0.9"/>
+    <line x1="40" y1="18" x2="40" y2="32" stroke="#2A2220" stroke-width="1.5"/>
+    <path d="M34,18 C34,18 34,8 40,8 C46,8 46,18 46,18 Z" fill="#A54242"/>
+  </svg>
+</div>
+
 <div id="orb1" class="orb"></div>
 <div id="orb2" class="orb"></div>
 <div id="progress-bar"></div>
@@ -326,7 +402,7 @@ body.dark-mode .divider{background:var(--blue-pale);}
     <p class="act-body">...But for who look closely, you're sophisticated and interesting.</p>
   </div>
 
-  <!-- ACT 2b: THE TRAITS — full screen, no label inside, header shows "The Colors" -->
+  <!-- ACT 2b: THE TRAITS -->
   <div class="act" id="act-2b">
     <div class="trait-row t1" id="tr1">
       <div class="trait-side left">Fiercely warm &amp; caring</div>
@@ -418,7 +494,6 @@ function advance(){
 
   /* Sea bg — show on step 4, hide otherwise */
   if(step === 4){
-    /* Sea and overlay fade in after 3 s */
     if(seaTimer) clearTimeout(seaTimer);
     seaTimer = setTimeout(()=>{
       document.getElementById('sea-bg').style.opacity = '1';
@@ -452,14 +527,15 @@ function advance(){
 
     if(step === 5){
       if(balloonTimer) clearTimeout(balloonTimer);
-      balloonTimer = setTimeout(launchBalloons, 1000);
+      /* Accelerated execution timer parameters (.5s trigger latency) */
+      balloonTimer = setTimeout(launchBalloons, 500);
     } else {
       if(balloonTimer){ clearTimeout(balloonTimer); balloonTimer=null; }
     }
 
   }, 420);
 
-  /* Pre-set button state before transition settles */
+  /* Explicitly prevent premature button leaks before transition settlements finish */
   if(step === 3 && !traitsAnimated){ setBtn('', true, false); }
   else if(step === 3){ setBtn('See how they blend', false, true); }
   else { setBtn(cfg.btn, false, false); }
@@ -471,14 +547,14 @@ function runTraitAnimation(){
   setBtn('', true, false);
 
   const rows = document.querySelectorAll('#act-2b .trait-row');
-  /* Rhythmic layout timing for the cascading cascade */
-  const d = 1600; 
+  /* Spacing frequency metrics set to 1.6s to guarantee legibility constraints */
+  const d = 2100; 
   rows.forEach((r,i)=>{
     r.classList.remove('revealed');
     setTimeout(()=>r.classList.add('revealed'), i * d + 300);
   });
 
-  /* Dynamically sets button reveal to execute 600ms after the last block finishes sliding */
+  /* Dynamically sets button reveal to execute exactly 600ms after the final panel concludes animation */
   const totalWait = (rows.length * d) + 300 + 600;
   setTimeout(()=>{ setBtn('See how they blend', false, true); }, totalWait);
 }
@@ -488,7 +564,6 @@ function startSeaSound(){
   if(audioCtx) return;
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-  /* Layer 1: pink-noise base via filtered white noise */
   const bufLen = audioCtx.sampleRate * 4;
   const buf = audioCtx.createBuffer(1, bufLen, audioCtx.sampleRate);
   const data = buf.getChannelData(0);
@@ -504,11 +579,9 @@ function startSeaSound(){
   const src = audioCtx.createBufferSource();
   src.buffer = buf; src.loop = true;
 
-  /* Low-pass filter to shape into wave sound */
   const lpf = audioCtx.createBiquadFilter();
   lpf.type='lowpass'; lpf.frequency.value=250; lpf.Q.value=0.5;
 
-  /* Slow LFO to make waves "breathe" */
   const lfo = audioCtx.createOscillator();
   lfo.frequency.value = 0.12;
   const lfoGain = audioCtx.createGain();
