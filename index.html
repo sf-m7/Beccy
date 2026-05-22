@@ -475,7 +475,7 @@ function runTraitAnimation(){
   const d = 1200;
   rows.forEach((r,i)=>{
     r.classList.remove('revealed');
-    setTimeout(()=>r.classList.add('revealed'), i * d + 200);
+    setTimeout(()=>r.classList.add('revealed'), i * d + 400);
   });
 
   /* Exact total time before button appears */
@@ -554,8 +554,8 @@ function launchBalloons(){
 function createBalloon(color){
   const size=40+Math.random()*38;
   const left=3+Math.random()*92;
-  const duration=3+Math.random()*3;
-  const delay=Math.random()*0.4;
+  const duration=4+Math.random()*4;
+  const delay=Math.random()*0.2;
   const sway=15+Math.random()*25;
 
   const wrap=document.createElement('div');
