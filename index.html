@@ -4,167 +4,283 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For Beccy</title>
-    <!-- Tailwind CSS for warm, clean typography and layouts -->
+    <!-- Tailwind CSS for warm, spacious sans-serif layout -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Smooth, slow transitions for an organic, relaxing feel */
+        /* Smooth, organic transitions for layout and background color morphs */
         .fade-transition {
-            transition: opacity 1000s cubic-bezier(0.4, 0, 0.2, 1), 
+            transition: opacity 1000ms cubic-bezier(0.4, 0, 0.2, 1), 
                         background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1),
-                        color 1000s ease;
+                        color 1000ms ease;
         }
         .text-fade {
             transition: opacity 800ms ease, transform 800ms ease;
         }
+        /* Sequential staggered animation utilities for Act III */
+        .trait-node {
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 600ms ease, transform 600ms ease;
+        }
+        .trait-node.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Floating CSS keyframes engine for the birthday balloon release */
+        @keyframes driftUp {
+            0% {
+                transform: translateY(105vh) scale(1);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.65;
+            }
+            90% {
+                opacity: 0.65;
+            }
+            100% {
+                transform: translateY(-15vh) scale(0.9);
+                opacity: 0;
+            }
+        }
+        .balloon {
+            position: fixed;
+            bottom: -10vh;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            animation: driftUp 8s linear forwards;
+            pointer-events: none;
+            z-index: 5;
+        }
+        /* Small knot detail below balloon */
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 7px solid inherit;
+            opacity: 0.7;
+        }
     </style>
 </head>
-<body class="fade-transition bg-[#F9F6F0] text-stone-800 min-h-screen flex flex-col justify-between font-serif selection:bg-blue-200 overflow-x-hidden">
+<body class="fade-transition bg-[#F9F6F0] text-stone-800 min-h-screen flex flex-col justify-between font-sans selection:bg-blue-200 overflow-x-hidden text-lg md:text-xl">
 
-    <!-- Top Navigation / Ambient Indicator -->
+    <!-- Ambient Header / Progress Track -->
     <header class="p-6 md:p-8 flex justify-between items-center w-full max-w-4xl mx-auto z-10">
-        <span id="ambient-title" class="text-xs tracking-[0.2em] uppercase opacity-40 font-sans transition-opacity duration-500">The Canvas</span>
-        <span id="step-indicator" class="text-xs font-sans opacity-40">1 / 4</span>
+        <span id="ambient-title" class="text-sm tracking-[0.2em] uppercase opacity-40 font-semibold transition-opacity duration-500">The Canvas</span>
+        <span id="step-indicator" class="text-sm font-medium opacity-40">1 / 5</span>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="flex-grow flex items-center justify-center px-6 md:px-12 max-w-2xl mx-auto w-full relative min-h-[500px]">
+    <!-- Main Content Stage -->
+    <main class="flex-grow flex items-center justify-center px-6 md:px-12 max-w-2xl mx-auto w-full relative min-h-[550px]">
         
         <!-- ACT I: THE BASELINE -->
         <section id="act-1" class="text-fade absolute w-full flex flex-col space-y-6 opacity-100 transform translate-y-0 pointer-events-auto">
-            <p class="text-xl md:text-2xl leading-relaxed text-stone-700 font-light">
-                I was having my morning tea and thinking about our chat the other day—specifically you saying you’re like a puzzle with too many hidden sections.
+            <p class="text-2xl md:text-3xl leading-relaxed text-stone-700 font-normal tracking-tight">
+                I was having my morning tea and thinking about our chat—specifically when you called me a puzzle with too many hidden sections, while describing yourself as simple and uninteresting.
             </p>
-            <p class="text-xl md:text-2xl leading-relaxed text-stone-700 font-light">
-                It made me laugh, but it also made me realize something. You’ve got it slightly wrong. You’re not a puzzle at all...
+            <p class="text-2xl md:text-3xl leading-relaxed text-stone-700 font-normal tracking-tight">
+                It made me laugh, but it also made me realize something. You’ve got it backwards. You aren't simple at all...
             </p>
         </section>
 
-        <!-- ACT II: THE GRADIENT (WITH INTERACTIVE MIXER) -->
+        <!-- ACT II: THE PARADOX SPLIT -->
         <section id="act-2" class="text-fade absolute w-full flex flex-col space-y-6 opacity-0 transform translate-y-4 pointer-events-none">
-            <p class="text-lg md:text-xl leading-relaxed text-stone-600 mb-2">
-                You’re more like a canvas of very distinct colors. What makes you unique isn't just one trait; it’s how beautifully you merge streaks that should be opposites:
+            <p class="text-3xl md:text-4xl leading-snug text-stone-800 font-medium tracking-tight">
+                You’re simply only for those who give a quick look, but for who looks closely, you’re sophisticated at least.
+            </p>
+        </section>
+
+        <!-- ACT III: THE TRAIT ANIMATION SEQUENCE -->
+        <section id="act-3" class="text-fade absolute w-full flex flex-col space-y-4 opacity-0 transform translate-y-4 pointer-events-none">
+            <p class="text-xl md:text-2xl leading-relaxed text-stone-600 font-normal mb-2">
+                When you look close enough, you see vibrant colors beautifully merging streaks that should be opposites:
             </p>
             
-            <!-- Interactive Trait Mixer Dashboard -->
-            <div class="space-y-3 font-sans my-4">
-                <button onclick="mixColor('warm', this)" class="trait-btn w-full p-4 rounded-xl border border-stone-200/60 bg-white/50 text-left transition-all duration-300 hover:bg-white flex justify-between items-center group">
-                    <span class="text-stone-700 font-medium group-hover:translate-x-1 transition-transform">Fiercely warm & caring</span>
-                    <span class="text-xs uppercase tracking-wider text-amber-600 opacity-80 font-semibold font-serif italic">yet sexy & seductive</span>
-                </button>
-                
-                <button onclick="mixColor('steel', this)" class="trait-btn w-full p-4 rounded-xl border border-stone-200/60 bg-white/50 text-left transition-all duration-300 hover:bg-white flex justify-between items-center group">
-                    <span class="text-stone-700 font-medium group-hover:translate-x-1 transition-transform">A total softie & sensitive</span>
-                    <span class="text-xs uppercase tracking-wider text-slate-600 opacity-80 font-semibold font-serif italic">yet resilient & reliable</span>
-                </button>
-                
-                <button onclick="mixColor('frank', this)" class="trait-btn w-full p-4 rounded-xl border border-stone-200/60 bg-white/50 text-left transition-all duration-300 hover:bg-white flex justify-between items-center group">
-                    <span class="text-stone-700 font-medium group-hover:translate-x-1 transition-transform">Blunt & frank</span>
-                    <span class="text-xs uppercase tracking-wider text-emerald-700 opacity-80 font-semibold font-serif italic">yet deeply unselfish</span>
-                </button>
+            <!-- Staggered Container Grid Layout -->
+            <div id="traits-container" class="space-y-3 w-full">
+                <div class="trait-node p-5 rounded-2xl bg-amber-100/60 border border-amber-200/50 flex justify-between items-center shadow-sm">
+                    <span class="text-stone-800 font-semibold text-xl">Caring & warm</span>
+                    <span class="text-sm uppercase tracking-wider text-amber-800 font-bold italic bg-white/60 px-3 py-1 rounded-full">yet sexy & seductive</span>
+                </div>
+                <div class="trait-node p-5 rounded-2xl bg-slate-200/60 border border-slate-300/40 flex justify-between items-center shadow-sm">
+                    <span class="text-stone-800 font-semibold text-xl">Softie & sensitive</span>
+                    <span class="text-sm uppercase tracking-wider text-slate-700 font-bold italic bg-white/60 px-3 py-1 rounded-full">yet resilient & reliable</span>
+                </div>
+                <div class="trait-node p-5 rounded-2xl bg-emerald-100/60 border border-emerald-200/40 flex justify-between items-center shadow-sm">
+                    <span class="text-stone-800 font-semibold text-xl">Frank & blunt</span>
+                    <span class="text-sm uppercase tracking-wider text-emerald-800 font-bold italic bg-white/60 px-3 py-1 rounded-full">yet unselfish</span>
+                </div>
             </div>
-            <p class="text-sm opacity-50 font-sans italic text-center">Tap each palette to see how they sit on the canvas</p>
         </section>
 
-        <!-- ACT III: THE CONVERGENCE -->
-        <section id="act-3" class="text-fade absolute w-full flex flex-col space-y-6 opacity-0 transform translate-y-4 pointer-events-none">
-            <p class="text-xl md:text-2xl leading-relaxed font-light">
-                Individually, those are just random streaks of paint. But when you step back, they don't clash. They all blend beautifully into a very specific, deep shade of <span class="font-normal text-blue-300 underline decoration-wavy decoration-1 underline-offset-4">Blue</span>.
-            </p>
-            <p class="text-xl md:text-2xl leading-relaxed font-light opacity-90">
-                Which makes total sense why it's your favorite. It’s like the ocean—calm and accessible on the surface, but holding a massive, complex world underneath that you only truly see if you pay attention.
-            </p>
-        </section>
-
-        <!-- ACT IV: THE TOAST -->
+        <!-- ACT IV: THE BLEND -->
         <section id="act-4" class="text-fade absolute w-full flex flex-col space-y-6 opacity-0 transform translate-y-4 pointer-events-none">
-            <h1 class="text-3xl md:text-4xl font-normal text-slate-900 tracking-tight">Happy Birthday, Beccy!</h1>
-            <p class="text-lg md:text-xl leading-relaxed text-slate-700 font-light">
-                I wish you a happy, long, and genuinely peaceful life ahead, especially as you step into this next big chapter and find your own new place.
+            <p class="text-2xl md:text-3xl leading-relaxed font-normal tracking-tight">
+                Together they form <span class="font-semibold text-blue-300 underline decoration-wavy decoration-2 underline-offset-4">blue</span>, a beautiful color, but never simple or to be taken for granted.
             </p>
-            <p class="text-lg md:text-xl leading-relaxed text-slate-700 font-light">
-                I’m really glad to have you as a friend. As time passes and the seasons change, I look forward to simply discovering more shades and layers of the color that is you.
+            <p class="text-2xl md:text-3xl leading-relaxed font-normal opacity-90 tracking-tight">
+                No wonder it's also your favorite color.
             </p>
-            <p class="text-sm tracking-widest uppercase text-slate-400 font-sans pt-4">— Saiff</p>
+        </section>
+
+        <!-- ACT V: THE TOAST (WITH BALLOON ENGINE SOURCE) -->
+        <section id="act-5" class="text-fade absolute w-full flex flex-col space-y-6 opacity-0 transform translate-y-4 pointer-events-none">
+            <h1 class="text-4xl md:text-5xl font-bold text-slate-900 tracking-tight mb-2">Happy Birthday, Beccy!</h1>
+            <p class="text-2xl md:text-3xl leading-relaxed text-slate-700 font-light tracking-tight">
+                I wish you a long, happy life. I might even envy you because only a few whom time plays in the favor of their beauty.
+            </p>
+            <p class="text-2xl md:text-3xl leading-relaxed text-slate-700 font-light tracking-tight">
+                I'm glad I opened chitchat that night of March 6th, and I look forward to discovering more shades and layers of that color that is you.
+            </p>
+            <p class="text-base tracking-widest uppercase text-slate-400 font-bold pt-4">— Saiff</p>
         </section>
 
     </main>
 
-    <!-- Bottom Navigation Controls -->
-    <footer class="p-8 flex flex-col items-center w-full max-w-4xl mx-auto z-10 space-y-4">
-        <button id="action-btn" onclick="nextStep()" class="font-sans text-sm tracking-widest uppercase border border-stone-300/80 px-8 py-3.5 rounded-full hover:bg-stone-800 hover:text-white hover:border-stone-800 transition-all duration-300 active:scale-95 shadow-sm bg-white/40">
+    <!-- Bottom Context Controls -->
+    <footer class="p-8 flex flex-col items-center w-full max-w-4xl mx-auto z-10">
+        <button id="action-btn" onclick="nextStep()" class="font-sans text-sm tracking-widest uppercase border border-stone-300/80 px-10 py-4 rounded-full hover:bg-stone-800 hover:text-white hover:border-stone-800 transition-all duration-300 active:scale-95 shadow-md bg-white/60 font-bold">
             Look closer
         </button>
     </footer>
 
-    <!-- Core Interactive Script -->
+    <!-- Interactive Execution Script -->
     <script>
         let currentStep = 1;
+        let balloonTimer = null;
 
-        // Configuration mapping states to visual properties
+        // Structural state matrix definitions
         const stepsConfig = {
-            1: { title: "The Canvas", bg: "bg-[#F9F6F0]", text: "text-stone-800", btn: "Look closer", border: "border-stone-300/80" },
-            2: { title: "The Gradients", bg: "bg-[#F3EFE9]", text: "text-stone-800", btn: "See how they blend", border: "border-stone-300/80" },
-            3: { title: "The Convergence", bg: "bg-[#111A24]", text: "text-stone-100", btn: "Make a wish", border: "border-slate-700 bg-slate-900/50 text-slate-200" },
-            4: { title: "The Toast", bg: "bg-[#EFF5FB]", text: "text-slate-800", btn: "Read again", border: "border-blue-200 bg-white text-slate-700" }
+            1: { title: "The Canvas", bg: "bg-[#F9F6F0]", text: "text-stone-800", btn: "Look closer", border: "border-stone-300/80", hideBtn: false },
+            2: { title: "The Deep Look", bg: "bg-[#F5F2EC]", text: "text-stone-800", btn: "Look closely", border: "border-stone-300/80", hideBtn: false },
+            3: { title: "The Palette", bg: "bg-[#EFECE6]", text: "text-stone-800", btn: "See how they blend", border: "border-stone-300/80", hideBtn: true },
+            4: { title: "The Blend", bg: "bg-[#111A24]", text: "text-slate-100", btn: "Close your eyes", border: "border-slate-700 bg-slate-900/50 text-slate-200", hideBtn: false },
+            5: { title: "The Toast", bg: "bg-[#EFF5FB]", text: "text-slate-800", btn: "Read again", border: "border-blue-200 bg-white text-slate-700", hideBtn: false }
         };
 
         /**
-         * Orchestrates transitions between structural acts
+         * Orchestrates transitions across sequential UI cards
          */
         function nextStep() {
-            // Fade out current text block
+            // Clean up running operational engines if resetting
+            if (currentStep === 5) {
+                clearTimeout(balloonTimer);
+                document.querySelectorAll('.balloon').forEach(b => b.remove());
+            }
+
+            // Collapse previous active layout node smoothly
             const currentAct = document.getElementById(`act-${currentStep}`);
             currentAct.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
             currentAct.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
 
-            // Increment state or wrap around at termination
-            currentStep = currentStep < 4 ? currentStep + 1 : 1;
+            // Compute structural index increment
+            currentStep = currentStep < 5 ? currentStep + 1 : 1;
             const config = stepsConfig[currentStep];
 
-            // Trigger global layout transition system
             setTimeout(() => {
-                // Adjust body environment classes safely
-                document.body.className = `fade-transition min-h-screen flex flex-col justify-between font-serif selection:bg-blue-200 overflow-x-hidden ${config.bg} ${config.text}`;
+                // Morph physical background properties dynamically
+                document.body.className = `fade-transition min-h-screen flex flex-col justify-between font-sans selection:bg-blue-200 overflow-x-hidden text-lg md:text-xl ${config.bg} ${config.text}`;
                 
-                // Refresh descriptive meta layouts
+                // Refresh explicit layout metadata
                 document.getElementById('ambient-title').innerText = config.title;
-                document.getElementById('step-indicator').innerText = `${currentStep} / 4`;
+                document.getElementById('step-indicator').innerText = `${currentStep} / 5`;
                 
                 const btn = document.getElementById('action-btn');
                 btn.innerText = config.btn;
-                btn.className = `font-sans text-sm tracking-widest uppercase border px-8 py-3.5 rounded-full transition-all duration-300 active:scale-95 shadow-sm ${config.border}`;
+                btn.className = `font-sans text-sm tracking-widest uppercase border px-10 py-4 rounded-full transition-all duration-300 active:scale-95 shadow-md ${config.border}`;
+                
+                // Enforce adaptive rendering parameters
+                if (config.hideBtn) {
+                    btn.classList.add('opacity-0', 'pointer-events-none');
+                } else {
+                    btn.classList.remove('opacity-0', 'pointer-events-none');
+                }
 
-                // Fade in incoming text node smoothly
+                // Deploy next structural act visibility
                 const nextAct = document.getElementById(`act-${currentStep}`);
                 nextAct.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
                 nextAct.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+
+                // Trigger specialized step scripts
+                if (currentStep === 3) {
+                    runStaggeredTraits();
+                } else if (currentStep === 5) {
+                    queueBalloons();
+                }
             }, 400);
         }
 
         /**
-         * Dynamic canvas color interpolation engine for Step 2
+         * Controls staggered node rendering logic for Page 3
          */
-        function mixColor(trait, element) {
-            // Reset state modifiers across sister nodes
-            document.querySelectorAll('.trait-btn').forEach(b => {
-                b.classList.remove('border-amber-300', 'bg-amber-50/40', 'border-slate-400', 'bg-slate-100/60', 'border-emerald-300', 'bg-emerald-50/40');
-                b.classList.add('border-stone-200/60', 'bg-white/50');
+        function runStaggeredTraits() {
+            const nodes = document.querySelectorAll('.trait-node');
+            nodes.forEach(n => n.classList.remove('visible'));
+
+            // Fade containers sequentially at a 600ms pacing scale
+            nodes.forEach((node, i) => {
+                setTimeout(() => {
+                    node.classList.add('visible');
+                }, i * 600);
             });
 
-            // Isolate specific trait to transition background anchor space
-            if (trait === 'warm') {
-                document.body.style.backgroundColor = '#F4EBE8'; // Warm, velvety rose-beige tint
-                element.classList.remove('border-stone-200/60', 'bg-white/50');
-                element.classList.add('border-amber-300', 'bg-amber-50/40');
-            } else if (trait === 'steel') {
-                document.body.style.backgroundColor = '#E5E9EC'; // Cool, grounded industrial slate tone
-                element.classList.remove('border-stone-200/60', 'bg-white/50');
-                element.classList.add('border-slate-400', 'bg-slate-100/60');
-            } else if (trait === 'frank') {
-                document.body.style.backgroundColor = '#EAEFEA'; // Clear, unembellished organic sage environment
-                element.classList.remove('border-stone-200/60', 'bg-white/50');
-                element.classList.add('border-emerald-300', 'bg-emerald-50/40');
-            }
+            // Make the navigation button reappear after exactly double the total visibility time
+            const processingBuffer = (nodes.length * 600) * 2;
+            setTimeout(() => {
+                if (currentStep === 3) {
+                    const btn = document.getElementById('action-btn');
+                    btn.classList.remove('opacity-0', 'pointer-events-none');
+                }
+            }, processingBuffer);
+        }
+
+        /**
+         * Registers execution timer for birthday atmospheric mechanics
+         */
+        function queueBalloons() {
+            balloonTimer = setTimeout(() => {
+                if (currentStep === 5) {
+                    // Initialize looping array generation for ascending balloons
+                    for (let i = 0; i < 22; i++) {
+                        setTimeout(spawnBalloon, i * 350);
+                    }
+                }
+            }, 10000); // Executed precisely 10 seconds post-load
+        }
+
+        /**
+         * Programmatic creation of individual floating nodes
+         */
+        function spawnBalloon() {
+            if (currentStep !== 5) return;
+
+            const b = document.createElement('div');
+            b.className = 'balloon';
+            
+            // Randomize spatial and scalar distribution scales
+            const width = Math.floor(Math.random() * 35) + 40; // 40px - 75px
+            const height = Math.floor(width * 1.2);
+            const leftPosition = Math.random() * 90; // 0% - 90%
+            const duration = Math.random() * 4 + 6; // 6s - 10s
+            
+            // Blend beautiful hues of soft ambient blue
+            const shadesOfBlue = ['#93C5FD', '#60A5FA', '#3B82F6', '#2563EB', '#A5F3FC', '#E0F2FE'];
+            const chosenBlue = shadesOfBlue[Math.floor(Math.random() * shadesOfBlue.length)];
+
+            b.style.width = `${width}px`;
+            b.style.height = `${height}px`;
+            b.style.left = `${leftPosition}%`;
+            b.style.backgroundColor = chosenBlue;
+            b.style.borderBottomColor = chosenBlue; // Sync knot tone
+            b.style.animationDuration = `${duration}s`;
+            
+            document.body.appendChild(b);
+
+            // Clean element node immediately upon animation completion
+            setTimeout(() => b.remove(), duration * 1000);
         }
     </script>
 </body>
