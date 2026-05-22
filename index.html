@@ -452,7 +452,7 @@ function advance(){
 
     if(step === 5){
       if(balloonTimer) clearTimeout(balloonTimer);
-      balloonTimer = setTimeout(launchBalloons, 4000);
+      balloonTimer = setTimeout(launchBalloons, 1000);
     } else {
       if(balloonTimer){ clearTimeout(balloonTimer); balloonTimer=null; }
     }
@@ -479,7 +479,7 @@ function runTraitAnimation(){
   });
 
   /* Exact total time before button appears */
-  const totalWait = 2400;
+  const totalWait = 3600;
   setTimeout(()=>{ setBtn('See how they blend', false, true); }, totalWait);
 }
 
