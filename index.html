@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>For Beccy</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
@@ -25,6 +25,7 @@ body{
   align-items:center;
   justify-content:center;
   min-height:100vh;
+  min-height:100dvh; /* Solves mobile browser UI hiding issues */
   height:100%;
   position:relative;
   overflow:hidden;
@@ -158,7 +159,7 @@ body.dark-mode .shore-asset {
 /* THE SAILING BOAT */
 #sailing-boat {
   left: 15%;
-  animation: boatSway 4s ease-in-out infinite alternate, boatSail 100s linear infinite;
+  animation: boatSway 4s ease-in-out infinite alternate, boatSail 80s linear infinite;
 }
 @keyframes boatSway {
   0% { transform: translateY(0) rotate(-3deg); }
@@ -233,6 +234,7 @@ body.dark-mode #next-btn:not(.blend-btn):hover{background:var(--blue-pale);color
   align-items:center;
   justify-content:center;
   text-align:center;
+  padding:0 20px; /* Safe padding for mobile text */
 }
 
 /* ACTS */
@@ -250,15 +252,14 @@ body.dark-mode #next-btn:not(.blend-btn):hover{background:var(--blue-pale);color
 }
 .act.visible{opacity:1;transform:translateY(0);pointer-events:auto;}
 
-/* TYPOGRAPHY */
+/* TYPOGRAPHY — Adjusted with fluid clamp scaling */
 .act-label{font-size:11px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);font-weight:400;}
-.act-body{font-size:clamp(21px,2.8vw,28px);line-height:1.65;font-weight:300;color:var(--ink);max-width:520px;}
+.act-body{font-size:clamp(17px,4.5vw,28px);line-height:1.65;font-weight:300;color:var(--ink);max-width:520px;}
 .act-body em{font-style:italic;}
 .divider{width:40px;height:1px;background:var(--muted);opacity:0.35;}
 
 /* ——— ACT 2b: FULL-SCREEN TRAIT STRIPS ——— */
 #act-2b{
-  /* Override: stretch to fill full viewport, no gaps, no centering */
   position:fixed;
   inset:0;
   display:flex;
@@ -291,7 +292,7 @@ body.dark-mode #next-btn:not(.blend-btn):hover{background:var(--blue-pale);color
   align-items:center;
   justify-content:center;
   padding:12px 20px;
-  font-size:clamp(15px,1.8vw,20px);
+  font-size:clamp(14px,3.5vw,20px);
   font-weight:600;
   line-height:1.35;
   text-align:center;
@@ -322,7 +323,7 @@ body.dark-mode .divider{background:var(--blue-pale);}
 #act-3 .divider{background:var(--blue-pale);opacity:0.4;}
 
 /* BIRTHDAY HEADING */
-.birthday-heading{font-size:clamp(34px,5vw,50px);font-weight:600;color:var(--blue-deep);line-height:1.15;letter-spacing:-.01em;}
+.birthday-heading{font-size:clamp(30px,8vw,50px);font-weight:600;color:var(--blue-deep);line-height:1.15;letter-spacing:-.01em;}
 .signature{font-size:13px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-top:.5rem;font-weight:400;}
 
 /* BALLOONS */
@@ -338,6 +339,43 @@ body.dark-mode .divider{background:var(--blue-pale);}
   10%{opacity:1;}
   90%{opacity:0.8;}
   100%{transform:translateY(-115vh) rotate(12deg);opacity:0;}
+}
+
+/* ——— RESPONSIVE HARMONY (MOBILE & TABLET SETTINGS) ——— */
+/* Desktop text safe zones for full bleed colors */
+@media (min-width: 769px) {
+  .trait-row:first-child .trait-side { padding-top: 80px; }
+  .trait-row:last-child .trait-side { padding-bottom: 100px; }
+}
+
+@media (max-width: 768px) {
+  /* UI Header & Footer scaling */
+  #ui-header { padding: 18px 20px; }
+  #ui-footer { padding: 20px; }
+  
+  /* Text bounding */
+  .act-body { max-width: 90vw; }
+  
+  /* The Color Rows: Stacks them vertically on phones to fix squishing */
+  .trait-row { flex-direction: column; }
+  .trait-side { padding: 14px 15px; }
+  
+  /* Safe Zones: Keeps text visible while letting color bleed to edges */
+  .trait-row:first-child .trait-side:first-child { padding-top: 80px; }
+  .trait-row:last-child .trait-side:last-child { padding-bottom: 100px; }
+  
+  /* Scene Asset Scaling for Mobile */
+  #sailing-boat { transform: scale(0.65); bottom: 13vh; }
+  #lighthouse-island { 
+    transform: scale(0.65); 
+    transform-origin: bottom right; 
+    right: -2%; 
+    bottom: 11vh; 
+  }
+  .shore-container { height: 16vh; }
+  
+  /* Button resizing */
+  #next-btn { padding: 12px 28px; font-size: 11px; }
 }
 </style>
 </head>
@@ -435,8 +473,8 @@ body.dark-mode .divider{background:var(--blue-pale);}
     <span class="act-label">The toast</span>
     <div class="divider"></div>
     <h1 class="birthday-heading">Happy Birthday,<br>Beccy.</h1>
-    <p class="act-body" style="font-size:clamp(18px,2.2vw,24px);">I wish you a long, happy life. I might even envy you — because only a few, time plays in the favor of their beauty.</p>
-    <p class="act-body" style="font-size:clamp(18px,2.2vw,24px);">I'm glad I opened Chitchat that night of March 6th. I look forward to discovering more shades and layers of that color that is you.</p>
+    <p class="act-body">I wish you a long, happy life. I might even envy you — because only a few, time plays in the favor of their beauty.</p>
+    <p class="act-body">I'm glad I opened Chitchat that night of March 6th. I look forward to discovering more shades and layers of that color that is you.</p>
     <p class="signature">— Saiff</p>
   </div>
 
@@ -548,14 +586,14 @@ function runTraitAnimation(){
 
   const rows = document.querySelectorAll('#act-2b .trait-row');
   /* Spacing frequency metrics set to 1.6s to guarantee legibility constraints */
-  const d = 2100; 
+  const d = 1600; 
   rows.forEach((r,i)=>{
     r.classList.remove('revealed');
     setTimeout(()=>r.classList.add('revealed'), i * d + 300);
   });
 
-  /* Dynamically sets button reveal to execute exactly 600ms after the final panel concludes animation */
-  const totalWait = (rows.length * d);
+  /* Fast fixed appearance */
+  const totalWait = 3500;
   setTimeout(()=>{ setBtn('See how they blend', false, true); }, totalWait);
 }
   
