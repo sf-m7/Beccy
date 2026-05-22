@@ -472,7 +472,7 @@ function runTraitAnimation(){
 
   const rows = document.querySelectorAll('#act-2b .trait-row');
   /* Rhythmic layout timing for the cascading cascade */
-  const d = 1200; 
+  const d = 1600; 
   rows.forEach((r,i)=>{
     r.classList.remove('revealed');
     setTimeout(()=>r.classList.add('revealed'), i * d + 300);
