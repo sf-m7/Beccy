@@ -416,7 +416,7 @@ function runTraitAnimation(){
 
   const rows = document.querySelectorAll('#act-2b .trait-row');
   /* Triple the original 600 ms = 1800 ms between each */
-  const d = 1800;
+  const d = 900;
   rows.forEach((r,i)=>{
     r.classList.remove('revealed');
     setTimeout(()=>r.classList.add('revealed'), i * d + 200);
@@ -453,7 +453,7 @@ function startSeaSound(){
 
   /* Low-pass filter to shape into wave sound */
   const lpf = audioCtx.createBiquadFilter();
-  lpf.type='lowpass'; lpf.frequency.value=400; lpf.Q.value=0.5;
+  lpf.type='lowpass'; lpf.frequency.value=250; lpf.Q.value=0.5;
 
   /* Slow LFO to make waves "breathe" */
   const lfo = audioCtx.createOscillator();
@@ -466,7 +466,7 @@ function startSeaSound(){
 
   const masterGain = audioCtx.createGain();
   masterGain.gain.setValueAtTime(0, audioCtx.currentTime);
-  masterGain.gain.linearRampToValueAtTime(0.32, audioCtx.currentTime + 3);
+  masterGain.gain.linearRampToValueAtTime(0.06, audioCtx.currentTime + 3);
 
   src.connect(lpf); lpf.connect(masterGain); masterGain.connect(audioCtx.destination);
   src.start();
