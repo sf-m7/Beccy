@@ -3,9 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Happy Birthday!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .page {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+            display: none; /* Hides all pages by default */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .active { display: block; } /* Shows the active page */
+        button {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 20px;
+        }
+        button:hover { transform: scale(1.05); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
 <body>
-    
+
+    <!-- PAGE 1: Intro -->
+    <div id="page1" class="page active">
+        <h1>🎉 Hey You!</h1>
+        <p>Someone sent you a special surprise message.</p>
+        <button onclick="nextPage('page2')">Open It! 🎁</button>
+    </div>
+
+    <!-- PAGE 2: The Congratulation -->
+    <div id="page2" class="page">
+        <h1>✨ Happy Birthday! ✨</h1>
+        <p>Wishing you a wonderful day filled with love, laughter, and lots of cake!</p>
+        <button onclick="nextPage('page3')">One More Thing... 🎈</button>
+    </div>
+
+    <!-- PAGE 3: Final Page -->
+    <div id="page3" class="page">
+        <h1>❤️ Best Wishes</h1>
+        <p>Hope all your wildest dreams come true this year!</p>
+    </div>
+
+    <script>
+        function nextPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            // Show the target page
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
 </body>
 </html>
