@@ -471,18 +471,18 @@ function runTraitAnimation(){
   setBtn('', true, false);
 
   const rows = document.querySelectorAll('#act-2b .trait-row');
-  /* Speed of rectangles appearing */
-  const d = 1200;
+  /* Rhythmic layout timing for the cascading cascade */
+  const d = 450; 
   rows.forEach((r,i)=>{
     r.classList.remove('revealed');
-    setTimeout(()=>r.classList.add('revealed'), i * d + 400);
+    setTimeout(()=>r.classList.add('revealed'), i * d + 300);
   });
 
-  /* Exact total time before button appears */
-  const totalWait = 4800;
+  /* Dynamically sets button reveal to execute 600ms after the last block finishes sliding */
+  const totalWait = (rows.length * d) + 300 + 600;
   setTimeout(()=>{ setBtn('See how they blend', false, true); }, totalWait);
 }
-
+  
 /* ——— SEA SOUND (Web Audio API — no external files) ——— */
 function startSeaSound(){
   if(audioCtx) return;
