@@ -92,6 +92,56 @@ body::before{
   background:rgba(15,28,45,0.62);
 }
 
+/* ——— THE SHORE ENGINE ——— */
+.shore-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 12vh;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+body.dark-mode .shore-container {
+  opacity: 1;
+}
+.wave-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background-repeat: repeat-x;
+  background-position: 0 bottom;
+  transform: translate3d(0, 0, 0);
+}
+/* Layer 1: Deep ocean core base */
+#wave1 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,60 C150,100 350,20 500,60 C650,100 850,20 1000,60 C1150,100 1350,20 1500,60 L1500,120 L0,120 Z' fill='%2316314F'/%3E%3C/svg%3E");
+  animation: waveRoll 12s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+  opacity: 0.8;
+}
+/* Layer 2: Mid-tone tide */
+#wave2 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,50 C200,90 400,10 600,50 C800,90 1000,10 1200,50 L1200,120 L0,120 Z' fill='%23224970'/%3E%3C/svg%3E");
+  animation: waveRoll 8s cubic-bezier(0.45, 0.55, 0.55, 0.45) infinite reverse;
+  opacity: 0.5;
+  bottom: 2px;
+}
+/* Layer 3: Foam edge cap */
+#wave3 {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,70 300,10 450,40 C600,70 750,10 900,40 C1050,70 1200,10 1350,40 L1350,120 L0,120 Z' fill='%23C8DFF0'/%3E%3C/svg%3E");
+  animation: waveRoll 15s linear infinite;
+  opacity: 0.25;
+  bottom: 4px;
+}
+@keyframes waveRoll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 /* PROGRESS */
 #progress-bar{position:fixed;top:0;left:0;height:2px;background:var(--blue-mid);width:20%;transition:width 0.9s cubic-bezier(0.4,0,0.2,1);z-index:10;opacity:0.7;}
 
@@ -244,6 +294,11 @@ body.dark-mode .divider{background:var(--blue-pale);}
 
 <div id="sea-bg"></div>
 <div id="sea-overlay"></div>
+<div class="shore-container">
+  <div id="wave1" class="wave-layer"></div>
+  <div id="wave2" class="wave-layer"></div>
+  <div id="wave3" class="wave-layer"></div>
+</div>
 <div id="orb1" class="orb"></div>
 <div id="orb2" class="orb"></div>
 <div id="progress-bar"></div>
@@ -330,7 +385,8 @@ const actMap={1:'act-1',2:'act-2a',3:'act-2b',4:'act-3',5:'act-4'};
 
 let traitsAnimated = false;
 let balloonTimer = null;
-let seaAudio = null;
+let audioCtx = null;
+let seaNodes = [];
 let seaTimer = null;
 
 /* ——— BUTTON HELPERS ——— */
@@ -415,22 +471,19 @@ function runTraitAnimation(){
   setBtn('', true, false);
 
   const rows = document.querySelectorAll('#act-2b .trait-row');
-  /* Triple the original 600 ms = 1800 ms between each */
-  const d = 900;
+  /* Speed of rectangles appearing */
+  const d = 450;
   rows.forEach((r,i)=>{
     r.classList.remove('revealed');
     setTimeout(()=>r.classList.add('revealed'), i * d + 200);
   });
 
-  /* Button after all traits + double the tripled interval */
-  const totalWait = rows.length * d + 200 + d * 2;
+  /* Exact total time before button appears */
+  const totalWait = 3500;
   setTimeout(()=>{ setBtn('See how they blend', false, true); }, totalWait);
 }
 
 /* ——— SEA SOUND (Web Audio API — no external files) ——— */
-let audioCtx = null;
-let seaNodes = [];
-
 function startSeaSound(){
   if(audioCtx) return;
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
